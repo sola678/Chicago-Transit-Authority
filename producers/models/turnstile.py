@@ -40,7 +40,7 @@ class Turnstile(Producer):
             key_schema=Turnstile.key_schema,
             value_schema=Turnstile.value_schema,
             #TODO: Uncomment once schema is defined
-            num_partitions=5,
+            num_partitions=1,
             num_replicas=1,
         )
         self.station = station
@@ -56,4 +56,8 @@ class Turnstile(Producer):
         # of entries that were calculated
         #
         while True:
-            Producer.produce(tunrstileEvents, Turnstile())
+            Producer(topic_name=topic_name,
+                    key_schema=key_schema,
+                    value_schema=value_schema,
+                    num_partitions=1,
+                    num_replicas=1,)
