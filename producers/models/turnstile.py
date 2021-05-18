@@ -36,7 +36,7 @@ class Turnstile(Producer):
         #
         #
         super().__init__(
-            f"{station_name}-turnstileEvents", # TODO: Come up with a better topic name
+            topic_name="turnstile", # TODO: Come up with a better topic name
             key_schema=Turnstile.key_schema,
             value_schema=Turnstile.value_schema,
             #TODO: Uncomment once schema is defined
@@ -56,4 +56,4 @@ class Turnstile(Producer):
         # of entries that were calculated
         #
         while True:
-            Producer.produce(tunrstile_events, Turnstile())
+            Producer.produce(tunrstileEvents, Turnstile())
