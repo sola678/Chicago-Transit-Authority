@@ -38,7 +38,7 @@ class Weather(Producer):
         #
         #
         super().__init__(
-            f"{self}-weather-events", # TODO: Come up with a better topic name
+            topic_name="weather", # TODO: Come up with a better topic name
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
             num_partitions=5,
@@ -89,7 +89,7 @@ class Weather(Producer):
         #    # TODO: What URL should be POSTed to?
         #    #
         #    #
-            f"{Weather.rest_proxy_url}/topics/weather_events",
+            f"{Weather.rest_proxy_url}/topics/weather",
         #    #
         #    #
         #    # TODO: What Headers need to bet set?
@@ -100,7 +100,8 @@ class Weather(Producer):
                 {
                    "key_schema": Weather.key_schema,
                     "value_schema": Weather.value_schema,
-                    "records":[{"value": asdict(Weather())}
+                    "records":[{"value": Weather(month).temp},
+                               {"value": Weather(month).status}
                     ]
                }
             )
