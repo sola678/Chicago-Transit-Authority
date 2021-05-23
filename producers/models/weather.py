@@ -98,10 +98,10 @@ class Weather(Producer):
             headers={"Content-Type": "application/vnd.kafka.avro.v2+json"},
             data=json.dumps(
                 {
-                   "key_schema": Weather.key_schema,
-                    "value_schema": Weather.value_schema,
-                    "records":[{"value": Weather(month).temp},
-                               {"value": Weather(month).status}
+                   "key_schema": json.dumps(Weather.key_schema),
+                    "value_schema": json.dumps(Weather.value_schema),
+                    "records":[{"temperature": Weather(month).temp},
+  {"status": Weather(month).status}
                     ]
                }
             )
