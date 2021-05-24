@@ -24,7 +24,7 @@ class Station(Producer):
     def __init__(self, station_id, name, color, direction_a=None, direction_b=None):
         self.name = name
         station_name = (
-            self.name.lower()
+            str(self.name).lower()
             .replace("/", "_and_")
             .replace(" ", "_")
             .replace("-", "_")
@@ -46,7 +46,7 @@ class Station(Producer):
             num_replicas=1,
         )
 
-        self.station_id = int(station_id)
+        self.station_id = str(station_id)
         self.color = color
         self.dir_a = direction_a
         self.dir_b = direction_b
