@@ -62,9 +62,9 @@ class Station(Producer):
         self.prev_station_id=prev_station_id
         self.train=train
         self.direction=direction
-        ##self.producer=Producer(self.topic_name, self.key_schema, self.value_schema)
-        self.producer=Station(self.broker_properties, self.station_id, self.name, self.color, self.direction
-                    )
+        self.producer=Producer(topic_name, key_schema, value_schema)
+        ##self.producer=Producer(self.broker_properties, self.station_id, self.name, self.color, self.direction
+         ##           )
         #"station_name":self.name,
          #"train_id":Station() self.train_id,
         # "prev_station_id":self.prev_station_id,
@@ -86,19 +86,17 @@ class Station(Producer):
         
         
         self.producer.produce(
-            topic=self.topic_name,
+            topic=topic_name,
             key={"timestamp": self.time_millis()},
             value={
-                "station_id": self.station_id,
-                "train_id": self.train_id,
-                "direction": self.direction,
-                "line": self.line,
-                "train_status": self.train_status,
-                "prev_station_id": self.prev_station_id,
-                "prev_direction": self.prev_direction       
-                
-            },
+               "train_id": self.train.train_id,
+               "direction": self.train.direction,
+               "prev_station_id": self.train.prev_station_id,
+               "prev_direction": self.train.prev_direction
+           }
+            
         )
+        self.producer.poll(0)
 
     def __str__(self):
         return "Station | {:^5} | {:<30} | Direction A: | {:^5} | departing to {:<30} | Direction B: | {:^5} | departing to {:<30} | ".format(
