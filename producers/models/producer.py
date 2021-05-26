@@ -49,17 +49,16 @@ class Producer:
             Producer.existing_topics.add(self.topic_name)
 
         # TODO: Configure the AvroProducer
-        p=AvroProducer(self.broker_properties, default_key_schema=key_schema, default_value_schema=value_schema
+    ##def produce(self):
+        self.p=AvroProducer(self.broker_properties, default_key_schema=key_schema, default_value_schema=value_schema
          )
-        p.produce(
-            topic=topic_name,
-            
-            value_schema=value_schema,
-            
-            key_schema=key_schema
-        
-        )
-        p.flush()
+        while True:
+            self.p.produce(
+                topic=topic_name,
+                value_schema=self.value_schema,
+                key_schema=self.key_schema
+                )
+            self.p.poll(0)
     #def topic_exists(self, client, topic_name):
         #topic_metadata=client.list_topics(timeout=5)
         #return topic_name in set(t.topic for t in iter(topic_metadata.topics.values()))
