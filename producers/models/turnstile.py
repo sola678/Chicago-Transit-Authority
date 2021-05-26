@@ -54,10 +54,10 @@ class Turnstile(Producer):
         #
         # TODO: Complete this function by emitting a message to the turnstile topic for the number
         # of entries that were calculated
-        self.producer=Producer(broker_properties,topic_name, key_schema, value_schema)
+        ##self.producer=Producer(broker_properties,topic_name, key_schema, value_schema)
 
-        while True:
-            self.producer.produce(
+      
+        self.producer.produce(
            topic=self.topic_name,
            key={"timestamp": self.time_millis()},
            value={

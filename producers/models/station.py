@@ -58,11 +58,11 @@ class Station(Producer):
     def run(self, train, direction, prev_station_id, prev_direction):
         """Simulates train arrivals at this station"""
         
-        self.prev_direction=prev_direction
-        self.prev_station_id=prev_station_id
+        self.train.prev_direction=prev_direction
+        self.train.prev_station_id=prev_station_id
         self.train=train
-        self.direction=direction
-        self.producer=Producer(topic_name, key_schema, value_schema)
+        self.train.direction=direction
+        ##self.producer=Producer(topic_name, key_schema, value_schema)
         ##self.producer=Producer(self.broker_properties, self.station_id, self.name, self.color, self.direction
          ##           )
         #"station_name":self.name,
