@@ -22,7 +22,7 @@ class Turnstile(Producer):
     def __init__(self, station):
         """Create the Turnstile"""
         station_name = (
-            station.name.lower()
+            str(station.name).lower()
             .replace("/", "_and_")
             .replace(" ", "_")
             .replace("-", "_")
@@ -54,8 +54,17 @@ class Turnstile(Producer):
         #
         # TODO: Complete this function by emitting a message to the turnstile topic for the number
         # of entries that were calculated
-        p=Turnstile(self.broker_properties
-                    )
+        self.producer=Producer(broker_properties,topic_name, key_schema, value_schema)
 
         while True:
-            p.produce(topic=self.topic_name, key=self.timestamp, value_schema=self.value_schema)
+            self.producer.produce(
+           topic=self.topic_name,
+           key={"timestamp": self.time_millis()},
+           value={
+               "station_id": self.station.station_id,
+               "station_name": self.station.name,
+               "line": self.station.color.name,
+               "num_entries": num_entries
+           }
+        )
+        self.producer.poll(0)  
