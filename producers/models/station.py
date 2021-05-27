@@ -46,7 +46,7 @@ class Station(Producer):
             num_replicas=1,
         )
 
-        self.station_id = str(station_id)
+        self.station_id = int(station_id)
         self.color = color
         self.dir_a = direction_a
         self.dir_b = direction_b
@@ -58,10 +58,10 @@ class Station(Producer):
     def run(self, train, direction, prev_station_id, prev_direction):
         """Simulates train arrivals at this station"""
         
-        self.train.prev_direction=prev_direction
-        self.train.prev_station_id=prev_station_id
-        self.train=train
-        self.train.direction=direction
+        ##self.train.prev_direction=prev_direction
+        ##self.train.prev_station_id=prev_station_id
+        ##self.train=train
+        ##self.train.direction=direction
         ##self.producer=Producer(topic_name, key_schema, value_schema)
         ##self.producer=Producer(self.broker_properties, self.station_id, self.name, self.color, self.direction
          ##           )
@@ -86,14 +86,17 @@ class Station(Producer):
         
         
         self.producer.produce(
-            topic=topic_name,
+            topic=self.topic_name,
             key={"timestamp": self.time_millis()},
             value={
-               "train_id": self.train.train_id,
-               "direction": self.train.direction,
-               "prev_station_id": self.train.prev_station_id,
-               "prev_direction": self.train.prev_direction
-           }
+                   "station_id": self.station_id,
+                   "train_id": train.train_id,
+                   "direction": direction,
+                   "line": self.color.name,
+                   "train_status": train.status.name,
+                   "prev_station_id": prev_station_id,
+                   "prev_direction": prev_direction
+               }
             
         )
         self.producer.poll(0)
