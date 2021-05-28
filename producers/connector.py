@@ -25,39 +25,7 @@ def configure_connector():
     # using incrementing mode, with `stop_id` as the incrementing column name.
     # Make sure to think about what an appropriate topic prefix would be, and how frequently Kafka
     # Connect should run this connector (hint: not very often!)
-    rest_method = requests.post
-    resp = rest_method(
-        KAFKA_CONNECT_URL,
-        headers={"Content-Type": "application/json"},
-        data=json.dumps(
-            {
-                "name": "stations-jdbc",
-                "config": {
-                    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
-                    "topic.prefix": "station.",
-                    "mode": "incrementing",
-                    "incrementing.column.name": "stop_id",
-                    "table.whitelist": "stations",
-                    "tasks.max": 1,
-                    "connection.url": "jdbc:postgresql://localhost:5432/cta",
-                    "connection.user": "root",
-                    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-                    "key.converter.schemas.enable": "false",
-                    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-                    "value.converter.schemas.enable": "false",
-                },
-            }
-        ),
-    )
-
-    try:
-        resp.raise_for_status()
-    except:
-        print(f"failed creating connector: {json.dumps(resp.json(), indent=2)}")
-
-    
-        return
-
+   
     # TODO: Complete the Kafka Connect Config below.
     # Directions: Use the JDBC Source Connector to connect to Postgres. Load the `stations` table
     # using incrementing mode, with `stop_id` as the incrementing column name.
