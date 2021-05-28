@@ -3,8 +3,8 @@
     "name": "turnstile.value",
     "type": "record",
     "fields": [
-            {"name":"station_id", "type":"string"},
+            {"name":"station_id", "type":"int"},
             {"name":"station_name", "type":"string"},
-            {"name":"line", "type":"string"}
+            {"name":"line", "type":"string"}            
             ]
 }
