@@ -39,7 +39,8 @@ class KafkaConsumer:
         
         self.broker_properties = {
             "schema.registry.url" : "http://localhost:8081",
-            "broker.url" : "PLAINTEXT://localhost:9092"
+            "broker.url" : "PLAINTEXT://localhost:9092",
+            "auto.offset.reset": "earliest" if offset_earliest else "latest"
         }
 
         # TODO: Create the Consumer, using the appropriate type.
@@ -49,7 +50,7 @@ class KafkaConsumer:
                 {"bootstrap.servers": self.broker_properties["broker.url"]},schema_registry=self.broker_properties["schema.registry.url"]
                 )
         else:
-            consumer = Consumer({"group.id":"0" , "bootstrap.servers": "PLAINTEXT://localhost:9092", "enable.auto.commit" : True, "default.topic.config":{"auto.offset.reset": "earliest"}, "enable.auto.offset.store": True})
+            consumer = Consumer({"group.id":"0" , "bootstrap.servers": "PLAINTEXT://localhost:9092", "enable.auto.commit" : True, "default.topic.config":{"auto.offset.reset": "earliest" if offset_earliest else "latest"}, "enable.auto.offset.store": True, "message_handler":"message_handler"})
         consumer.subscribe([topic_name_pattern], on_assign=on_assign)    
         messages=consumer.poll(1, timeout=consume_timeout)
         for message in messages:
@@ -58,7 +59,7 @@ class KafkaConsumer:
             elif message.error() is not None:
                 continue
             else:
-                print(message.key(), message.value())
+                message_handler(message.key(), message.value())
         #
         #
         # TODO: Configure the AvroConsumer and subscribe to the topics. Make sure to think about
@@ -112,7 +113,7 @@ class KafkaConsumer:
                 elif m.error() is not None:
                     continue
                 else:
-                    print(m.key(), m.value())
+                    message_handler(m.key(), m.value())
                     return 1
         
         logger.info("_consume is incomplete - skipping")
