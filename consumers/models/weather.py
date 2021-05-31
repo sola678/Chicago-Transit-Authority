@@ -20,6 +20,8 @@ class Weather:
         #
         # TODO: Process incoming weather messages. Set the temperature and status.
         value = json.loads(message.value())
+        self.temperature = value.get("temperature")
+        self.status = value.get("status")
         
         
         
